@@ -7,6 +7,7 @@ const PORT = process.env.PORT
 app.use(express.static('public'))
 
 app.get('/hola-mundo', (req, res) => {
+  console.log('Ha entrado una nueva solicitud')
   res.send('Hello World')
 })
 
