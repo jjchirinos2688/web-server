@@ -1,12 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NodeJs</title>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
+
 <body>
-    <h3>Sirviendo contenido estático desde NodeJs</h3>
+
+    <div style="display: flex; justify-content: space-between;">
+
+        <h3>Sirviendo contenido estático desde NodeJs</h3>
+        <button type="button" id="google-logout" style="display: inline-block;padding: 5px;width: 80px;border: none;background-color: red;border-radius: 5px;line-height: 1.5;color: #fff;cursor: pointer;">Salir</button>
+    </div>
+
+
+
+    <div id="g_id_onload" data-client_id="695911249328-9sjjsmkunud5q84gelfujd7mepoc3l4d.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse" data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+        data-shape="rectangular" data-logo_alignment="center">
+    </div>
+
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        function handleCredentialResponse(response) {
+
+            console.log(response);
+            const body = { id_token: response.credential }
+
+            fetch('http://localhost:3000/api/usuarios/google-login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then(resp => resp.json())
+                .then(resp => {
+
+                    console.log(resp);
+                    location.href='http://localhost:3000/api/usuarios/bienvenido'
+                })
+                .catch(error => console.log(error))
+        }
+
+
+        const btnLogout = document.getElementById('google-logout')
+        btnLogout.onclick = () => {
+
+            google.accounts.id.revoke('juliochirinosacurero@gmail.com', done =>{
+                location.reload()
+            })
+            
+
+        }
+
+
+    </script>
 </body>
+
 </html>
